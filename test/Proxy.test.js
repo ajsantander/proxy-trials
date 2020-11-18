@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-let _proxy, _himplementation, _contract;
+let _proxy, _implementation, _contract;
 let _proxyType, _implementationType;
 
 const deployProxy = async ({
