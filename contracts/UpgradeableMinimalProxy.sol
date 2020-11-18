@@ -29,7 +29,7 @@ pragma solidity >= 0.6.0 < 0.8.0;
 \           0x0000002c      f3             return                                         Returns with data at mem pos 0, length rds
  */
 
-contract MinimalProxy {
+contract UpgradeableMinimalProxy {
     constructor(address implementation) {
         bytes20 implementationBytes = bytes20(implementation);
 
