@@ -62,4 +62,9 @@ contract UpgradeableMinimalProxy {
             return(runtimeCode, 0x3a)
         }
     }
+
+    // These functions won't make it to runtime code,
+    // They're only here for the ABI to exist.
+    function setImplementation(address newImplementation) public {}
+    function getImplementation() public view returns (address) {}
 }

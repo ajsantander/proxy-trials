@@ -1,5 +1,4 @@
 const { expect } = require('chai');
-const { deployProxy } = require('./helpers/Proxy.helper');
 const {
   itBehavesLikeAForwardingProxy,
 } = require('./behaviors/ForwardingProxy.behavior');
@@ -13,7 +12,18 @@ describe('MinimalProxy', function () {
       .toLowerCase()}5af43d82803e903d91602b57fd5bf3`;
 
   before('deploy implementation and proxy', async () => {
-    await deployProxy({ context, proxyType: 'MinimalProxy' });
+    const Implementation = await ethers.getContractFactory('ImplementationV1');
+    context.implementation = await Implementation.deploy();
+    await context.implementation.deployed();
+
+    const Proxy = await ethers.getContractFactory('MinimalProxy');
+    context.proxy = await Proxy.deploy(context.implementation.address);
+    await context.proxy.deployed();
+
+    context.contract = await ethers.getContractAt(
+      'ImplementationV1',
+      context.proxy.address
+    );
   });
 
   it('deploys a proxy with the correct code', async function () {
@@ -22,4 +32,5 @@ describe('MinimalProxy', function () {
   });
 
   itBehavesLikeAForwardingProxy({ context });
+  // itBehavesLikeAnUpgradeableProxy({ context }); // MinimalProxy is not upgradeable
 });

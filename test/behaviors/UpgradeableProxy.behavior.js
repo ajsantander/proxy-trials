@@ -1,18 +1,10 @@
 const { expect } = require('chai');
-const { upgradeProxy } = require('../helpers/Proxy.helper');
 
 const itBehavesLikeAnUpgradeableProxy = ({ context }) => {
   describe('when upgrading the proxy', () => {
     before('update proxy wrapper interface', async () => {
       context.contract = await ethers.getContractAt(
         'ImplementationV2',
-        context.proxy.address
-      );
-    });
-
-    after('restore proxy wrapper interface', async () => {
-      context.contract = await ethers.getContractAt(
-        context.implementationType,
         context.proxy.address
       );
     });
@@ -27,7 +19,18 @@ const itBehavesLikeAnUpgradeableProxy = ({ context }) => {
 
     describe('after upgrading to V2', () => {
       before('upgrade to V2', async () => {
-        await upgradeProxy({ context, implementationType: 'ImplementationV2' });
+        const Implementation = await ethers.getContractFactory(
+          'ImplementationV2'
+        );
+        context.implementation = await Implementation.deploy();
+        await context.implementation.deployed();
+
+        await context.proxy.setImplementation(context.implementation.address);
+
+        context.contract = await ethers.getContractAt(
+          'ImplementationV2',
+          context.proxy.address
+        );
       });
 
       it('reads the correct message', async () => {
