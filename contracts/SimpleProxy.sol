@@ -11,6 +11,7 @@ contract SimpleProxy {
     function setImplementation(address newImplementation) public {
         bytes32 slot = _IMPLEMENTATION_SLOT;
 
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             sstore(slot, newImplementation)
         }
@@ -19,6 +20,7 @@ contract SimpleProxy {
     function getImplementation() public view returns (address implementation) {
         bytes32 slot = _IMPLEMENTATION_SLOT;
 
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             implementation := sload(slot)
         }
@@ -27,6 +29,7 @@ contract SimpleProxy {
     fallback() external {
         address implementation = getImplementation();
 
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             calldatacopy(0, 0, calldatasize())
 

@@ -5,6 +5,7 @@ contract MinimalProxy {
     constructor(address implementation) {
         bytes20 implementationBytes = bytes20(implementation);
 
+        // solhint-disable-next-line no-inline-assembly
         assembly{
             let code := mload(0x40)
 
