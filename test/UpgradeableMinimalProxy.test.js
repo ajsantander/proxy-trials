@@ -1,6 +1,9 @@
 const { expect } = require('chai');
+const { runTxAndLogGasUsed } = require('./helpers/Gas.helper');
 
 describe('UpgradeableMinimalProxy', function () {
+  let proxy, implementation, contract;
+
   const getProxyCode = () =>
     '0x363d3d373d3d3d363d7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc545af43d82803e903d91603857fd5bf3';
 
@@ -27,10 +30,10 @@ describe('UpgradeableMinimalProxy', function () {
       '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
     );
 
-    expect(readImplementation).to.equal(
-      `0x000000000000000000000000${implementation.address
-        .slice(2)
-        .toLowerCase()}`
+    expect(
+      ethers.utils.hexStripZeros(readImplementation).toLowerCase()
+    ).to.equal(
+      implementation.address.toLowerCase()
     );
   });
 
@@ -48,8 +51,8 @@ describe('UpgradeableMinimalProxy', function () {
     });
 
     describe('when the value is set', () => {
-      before('set value in proxy', async () => {
-        await contract.setValue(42);
+      it('sets the value', async function() {
+        await runTxAndLogGasUsed(this, await contract.setValue(42));
       });
 
       it('reads the correct value', async () => {
@@ -69,9 +72,7 @@ describe('UpgradeableMinimalProxy', function () {
 
     describe('before upgrading to V2', () => {
       it('reverts when interacting with an unknown function', async () => {
-        expect(contract.getMessage()).to.be.revertedWith(
-          "function selector was not recognized and there's no fallback function"
-        );
+        expect(contract.getMessage()).to.be.reverted;
       });
     });
 

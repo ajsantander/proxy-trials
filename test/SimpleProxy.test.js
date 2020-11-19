@@ -1,6 +1,9 @@
 const { expect } = require('chai');
+const { runTxAndLogGasUsed } = require('./helpers/Gas.helper');
 
 describe('SimpleProxy', function () {
+  let proxy, implementation, contract;
+
   before('deploy implementation and proxy', async () => {
     const Implementation = await ethers.getContractFactory('ImplementationV1');
     implementation = await Implementation.deploy();
@@ -25,8 +28,8 @@ describe('SimpleProxy', function () {
     });
 
     describe('when the value is set', () => {
-      before('set value in proxy', async () => {
-        await contract.setValue(42);
+      it('sets the value', async function() {
+        await runTxAndLogGasUsed(this, await contract.setValue(42));
       });
 
       it('reads the correct value', async () => {
@@ -46,9 +49,7 @@ describe('SimpleProxy', function () {
 
     describe('before upgrading to V2', () => {
       it('reverts when interacting with an unknown function', async () => {
-        expect(contract.getMessage()).to.be.revertedWith(
-          "function selector was not recognized and there's no fallback function"
-        );
+        expect(contract.getMessage()).to.be.reverted;
       });
     });
 
