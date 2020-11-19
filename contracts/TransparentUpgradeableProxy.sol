@@ -4,7 +4,7 @@ pragma solidity >= 0.6.0 < 0.8.0;
 import "./Upgradeable.sol";
 
 
-contract SimpleProxy is Upgradeable {
+contract TransparentUpgradeableProxy is Upgradeable {
     constructor(address implementation) {
         setImplementation(implementation);
     }

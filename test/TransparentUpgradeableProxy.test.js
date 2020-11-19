@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { runTxAndLogGasUsed } = require('./helpers/Gas.helper');
 
-describe('SimpleProxy', function () {
+describe('TransparentUpgradeableProxy', function () {
   let proxy, implementation, contract;
 
   before('deploy implementation and proxy', async () => {
@@ -9,7 +9,7 @@ describe('SimpleProxy', function () {
     implementation = await Implementation.deploy();
     await implementation.deployed();
 
-    const Proxy = await ethers.getContractFactory('SimpleProxy');
+    const Proxy = await ethers.getContractFactory('TransparentUpgradeableProxy');
     proxy = await Proxy.deploy(implementation.address);
     await proxy.deployed();
 
