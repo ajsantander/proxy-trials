@@ -5,7 +5,7 @@ import "./Upgradeable.sol";
 
 
 contract UpgradeableImplementationV1 is Upgradeable {
-    uint256 _value;
+    uint256 private _value;
 
     function setValue(uint256 newValue) public {
         _value = newValue;

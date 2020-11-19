@@ -2,8 +2,8 @@
 pragma solidity >= 0.6.0 < 0.8.0;
 
 contract ImplementationV2 {
-    uint256 _value;
-    string _message;
+    uint256 private _value;
+    string private _message;
 
     function setValue(uint256 newValue) public {
         _value = newValue;
