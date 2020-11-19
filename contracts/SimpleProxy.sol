@@ -5,11 +5,15 @@ import "./Upgradeable.sol";
 
 
 contract SimpleProxy is Upgradeable {
-    constructor(address implementation) public {
+    constructor(address implementation) {
         setImplementation(implementation);
     }
 
     fallback () external {
+        _fallback();
+    }
+
+    function _fallback() public override {
         address implementation = getImplementation();
 
         // solhint-disable-next-line no-inline-assembly

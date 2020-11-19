@@ -33,10 +33,17 @@ pragma solidity >= 0.6.0 < 0.8.0;
 
 contract UpgradeableMinimalProxy {
     constructor(address implementation) {
-        // Write the first implementation to storage
-        bytes32 slot = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
+        // Write admin to storage
+        address firstAdmin = msg.sender;
+        bytes32 admin_slot = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
         assembly {
-            sstore(slot, implementation)
+            sstore(admin_slot, firstAdmin)
+        }
+
+        // Write the first implementation to storage
+        bytes32 impl_slot = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
+        assembly {
+            sstore(impl_slot, implementation)
         }
 
         // Build and return runtime code
@@ -67,4 +74,6 @@ contract UpgradeableMinimalProxy {
     // They're only here for the ABI to exist.
     function setImplementation(address newImplementation) public {}
     function getImplementation() public view returns (address) {}
+    function setAdmin(address newAdmin) public {}
+    function getAdmin() public view returns (address) {}
 }

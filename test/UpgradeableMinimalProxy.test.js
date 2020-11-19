@@ -24,6 +24,21 @@ describe('UpgradeableMinimalProxy', function () {
     );
   });
 
+  it('stored the admin correctly', async () => {
+    const readAdmin = await ethers.provider.getStorageAt(
+      proxy.address,
+      '0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103'
+    );
+
+    const admin = (await ethers.getSigners())[0].address;
+
+    expect(
+      ethers.utils.hexStripZeros(readAdmin).toLowerCase()
+    ).to.equal(
+      admin.toLowerCase()
+    );
+  });
+
   it('stored the implementation correctly', async () => {
     const readImplementation = await ethers.provider.getStorageAt(
       proxy.address,
