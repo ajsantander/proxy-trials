@@ -50,7 +50,7 @@ contract MinimalProxy {
             // and finally the second chunk
 
             // Write the first chunk at pos 0
-            mstore(runtimeCode, 0x363d3d373d3d3d363d7300000000000000000000000000000000000000000000)
+            mstore(runtimeCode, 0x363d3d373d3d3d363d730000000000000000000000000000000000000000000)
 
             // Write the implementation address at pos 10, or 0x2a
             mstore(add(runtimeCode, 0x0a), implementationBytes)

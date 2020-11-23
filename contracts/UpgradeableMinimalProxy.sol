@@ -76,4 +76,5 @@ contract UpgradeableMinimalProxy {
     function getImplementation() public view returns (address) {}
     function setAdmin(address newAdmin) public {}
     function getAdmin() public view returns (address) {}
+    function destroy() public {}
 }

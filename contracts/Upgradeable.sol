@@ -65,4 +65,8 @@ contract Upgradeable {
     }
 
     function _fallback() public virtual {}
+
+    function destroy() public {
+        selfdestruct(msg.sender);
+    }
 }
